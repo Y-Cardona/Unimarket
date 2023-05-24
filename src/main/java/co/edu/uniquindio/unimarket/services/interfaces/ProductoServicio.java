@@ -1,8 +1,8 @@
 package co.edu.uniquindio.unimarket.services.interfaces;
 
+import co.edu.uniquindio.unimarket.dto.CategoriaDTO;
 import co.edu.uniquindio.unimarket.dto.ProductoDTO;
 import co.edu.uniquindio.unimarket.dto.ProductoGetDTO;
-import co.edu.uniquindio.unimarket.model.Categoria;
 import co.edu.uniquindio.unimarket.model.Estado;
 
 import java.util.List;
@@ -24,14 +24,16 @@ public interface ProductoServicio {
 
     List<ProductoGetDTO> listarProductosUsuario(int codigoUsuario);
 
-    List<ProductoGetDTO> listarProductosCategoria(Categoria categoria);
+    List<ProductoGetDTO> listarProductosCategoria(CategoriaDTO categoria);
 
     List<ProductoGetDTO> listarProductosPorEstado(Estado estado);
 
-    List<ProductoGetDTO> listarProductosFavoritos(int codigoUsuario);
+    //List<ProductoGetDTO> listarProductosFavoritos(int codigoUsuario);
 
     List<ProductoGetDTO> listarProductosNombre(String nombre);
 
     List<ProductoGetDTO> listarProductosPrecio(float precioMinimo, float precioMaximo);
+
+    List<ProductoGetDTO> listarPdtosMenorMayor(int  codigo);
 
 }

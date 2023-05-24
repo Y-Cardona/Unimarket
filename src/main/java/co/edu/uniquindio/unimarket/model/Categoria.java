@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Getter
@@ -19,8 +18,9 @@ public class Categoria implements Serializable {
     private int codigo;
 
     @Column(nullable = false, length = 60)
+    @JoinColumn(unique = true)
     private String nombre;
 
-    @ManyToMany(mappedBy = "categorias")
-    private List<Producto> productos;
+    @ManyToOne
+    private Producto producto;
 }

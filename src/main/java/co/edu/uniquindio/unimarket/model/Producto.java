@@ -49,8 +49,7 @@ public class Producto implements Serializable {
     private List<String> imagenes;
 
     @ToString.Exclude
-    @ManyToMany
-    @JoinTable(name = "pdtoCat")
+    @OneToMany(mappedBy = "producto")
     private List<Categoria> categorias;
 
     @ToString.Exclude

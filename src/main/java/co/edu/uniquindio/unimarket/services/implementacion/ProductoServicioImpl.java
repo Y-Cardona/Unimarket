@@ -1,8 +1,8 @@
 package co.edu.uniquindio.unimarket.services.implementacion;
 
+import co.edu.uniquindio.unimarket.dto.CategoriaDTO;
 import co.edu.uniquindio.unimarket.dto.ProductoDTO;
 import co.edu.uniquindio.unimarket.dto.ProductoGetDTO;
-import co.edu.uniquindio.unimarket.model.Categoria;
 import co.edu.uniquindio.unimarket.model.Estado;
 import co.edu.uniquindio.unimarket.model.Producto;
 import co.edu.uniquindio.unimarket.model.Usuario;
@@ -11,6 +11,7 @@ import co.edu.uniquindio.unimarket.repositories.UsuarioRepo;
 import co.edu.uniquindio.unimarket.services.interfaces.ProductoServicio;
 import co.edu.uniquindio.unimarket.services.interfaces.UsuarioServicio;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -74,7 +75,7 @@ public class ProductoServicioImpl implements ProductoServicio {
 
     @Override
     public int eliminarProducto(int codigoProducto) throws Exception{
-        productoRepo.delete(productoRepo.buscarProducto(codigoProducto))
+        productoRepo.delete(productoRepo.buscarProducto(codigoProducto));
         return codigoProducto;
     }
 
@@ -99,7 +100,7 @@ public class ProductoServicioImpl implements ProductoServicio {
 
     private ProductoGetDTO convertir(Producto producto){
 
-        ProductoGetDTO productoGetDTO = new ProductoGetDTO(
+        return new ProductoGetDTO(
                 producto.getCodigo(),
                 producto.getEstado(),
                 producto.getFechLimite(),
@@ -112,23 +113,33 @@ public class ProductoServicioImpl implements ProductoServicio {
                 producto.getCategorias()
         );
 
-        return productoGetDTO;
     }
 
     @Override
-    public List<ProductoGetDTO> listarProductosCategoria(Categoria categoria) {
-        return null;
+    public List<ProductoGetDTO> listarProductosCategoria(CategoriaDTO categoria) {
+        List<Producto> lista = productoRepo.listarPdtosCategoria(categoria.getNombre());
+        List<ProductoGetDTO> productos = new ArrayList<>();
+        for(Producto p : lista){
+            productos.add(convertir(p));
+        }
+        return productos;
     }
 
     @Override
     public List<ProductoGetDTO> listarProductosPorEstado(Estado estado) {
-        return null;
+        List<Producto> lista = productoRepo.listarProductosEstado(estado.toString());
+        List<ProductoGetDTO> productos = new ArrayList<>();
+        for(Producto p : lista){
+            productos.add(convertir(p));
+        }
+        return productos;
     }
 
-    @Override
+    /*@Override
     public List<ProductoGetDTO> listarProductosFavoritos(int codigoUsuario) {
         return null;
-    }
+    }*/
+
 
     @Override
     public List<ProductoGetDTO> listarProductosNombre(String nombre) {
@@ -145,6 +156,22 @@ public class ProductoServicioImpl implements ProductoServicio {
 
     @Override
     public List<ProductoGetDTO> listarProductosPrecio(float precioMinimo, float precioMaximo) {
-        return null;
+        List<Producto> lista = productoRepo.listarProductosPrecio(precioMinimo, precioMaximo);
+        List<ProductoGetDTO> productos = new ArrayList<>();
+        for(Producto p : lista){
+            productos.add(convertir(p));
+        }
+        return productos;
     }
+
+    @Override
+    public List<ProductoGetDTO> listarPdtosMenorMayor(int codigo) {
+        List<ProductoGetDTO> pdtosMayorMenor = new ArrayList<>();
+        List<Producto> mayor = productoRepo.productosMayorPrecio(codigo, PageRequest.of(0,1));
+        List<Producto> menor = productoRepo.productosMenorPrecio(codigo, PageRequest.of(0,1));
+        pdtosMayorMenor.add(convertir(mayor.get(0)));
+        pdtosMayorMenor.add(convertir(menor.get(0)));
+        return pdtosMayorMenor;
+    }
+
 }

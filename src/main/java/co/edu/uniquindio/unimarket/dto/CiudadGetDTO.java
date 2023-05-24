@@ -14,7 +14,7 @@ public class CiudadGetDTO {
 
     @NotNull
     @NotBlank
-    @Length(max = 60, message = "El teléfono debe tener máximo 12 caracteres")
+    @Length(max = 60, message = "El nombre debe tener máximo 60 caracteres")
     private String nombre;
 
 }

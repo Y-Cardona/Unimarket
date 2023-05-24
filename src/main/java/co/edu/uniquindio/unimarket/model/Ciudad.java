@@ -19,6 +19,7 @@ public class Ciudad implements Serializable {
     private int codigo;
 
     @Column(nullable = false, length = 50)
+    @JoinColumn(unique = true)
     private String nombre;
 
     @OneToMany(mappedBy = "ciudad")
